@@ -25,9 +25,11 @@
 
 		},
 		init: function( editor ) {
+			var priority = editor.config.staticSpacePriority || 19;
+
 			editor.on( 'loaded', function() {
 				create( editor );
-			}, null, null, 19 );
+			}, null, null, priority );
 		}
 
 	} );
