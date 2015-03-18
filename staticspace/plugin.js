@@ -2,27 +2,26 @@
 
 	'use strict';
 
+	var pluginCss =
+		'.cke-staticspace-container {' +
+			'position: relative;' +
+		'}' +
+		'.cke-staticspace-toolbar {' +
+			'position: absolute;' +
+			'z-index: 1000;' +
+		'}' +
+		'.cke-staticspace-toolbar-right {' +
+			'right: 0;' +
+		'}' +
+		'.cke-staticspace-toolbar-top {' +
+			'bottom: 100%;' +
+			'margin-bottom:3px;' +
+		'}';
+
 	CKEDITOR.plugins.add('staticspace', {
 
 		onLoad: function() {
-
-			CKEDITOR.addCss(
-				'.cke-staticspace-container {' +
-					'position: relative;' +
-				'}' +
-				'.cke-staticspace-toolbar {' +
-					'position: absolute;' +
-					'z-index: 1000;' +
-				'}' + 
-				'.cke-staticspace-toolbar-right {' +
-					'right: 0;' +
-				'}' +
-				'.cke-staticspace-toolbar-top {' +
-					'bottom: 100%;' +
-					'margin-bottom:3px;' +
-				'}'
-			);
-
+			CKEDITOR.addCss( pluginCss );
 		},
 		init: function( editor ) {
 			var priority = editor.config.staticSpacePriority || 19;
@@ -73,6 +72,10 @@
 						content: innerHtml,
 					} ) );
 
+				if ( editor.elementMode === CKEDITOR.ELEMENT_MODE_REPLACE ) {
+					space.getDocument().appendStyleText( pluginCss );
+				}
+
 				if ( positionY === 'bottom' ) {
 					space.insertAfter( editor.element );
 				} else {
@@ -103,7 +106,7 @@
 } )();
 
 /**
- * Defines vertical position of static space.
+ * Vertical position of static space.
  * Allowed values:
  * * 'top'
  * * 'bottom'
@@ -116,7 +119,7 @@
  * @member CKEDITOR.config
  */
 /**
- * Defines horizontal position of static space.
+ * Horizontal position of static space.
  * Allowed values:
  * * 'left'
  * * 'right'
@@ -124,6 +127,19 @@
  * Example:
  *
  *				config.staticSpacePositionX = 'right';
+ *
+ * @cfg {String} [staticSpacePositionX='left']
+ * @member CKEDITOR.config
+ */
+/**
+ * Plugin load priority.
+ * For CKEDITOR.replace mode (iframe or div) the value should be <= 9.
+ *
+ * Example:
+ *
+ *				config.staticSpacePriority = 9;
+ *
+ * Defaults to: 19
  *
  * @cfg {String} [staticSpacePositionX='left']
  * @member CKEDITOR.config
